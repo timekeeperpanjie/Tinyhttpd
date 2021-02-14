@@ -122,6 +122,7 @@ void accept_request(void *arg)
  //根据上面的Get请求，可以看到这边就是取第一行
  //这边都是在处理第一条http信息
  //"GET / HTTP/1.1\n"
+ printf("服务器开始接收消息\n");
  numchars = get_line(client, buf, sizeof(buf));
  i = 0; j = 0;
 
@@ -577,6 +578,9 @@ int startup(u_short *port)
  name.sin_family = AF_INET;
  name.sin_port = htons(*port);
  name.sin_addr.s_addr = htonl(INADDR_ANY);
+ //端口复用
+ int opt = 1;
+ setsockopt(httpd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
  //绑定socket
  if (bind(httpd, (struct sockaddr *)&name, sizeof(name)) < 0)
   error_die("bind");
@@ -628,7 +632,7 @@ void unimplemented(int client)
 int main(void)
 {
  int server_sock = -1;
- u_short port = 0;
+ u_short port = 7575;
  int client_sock = -1;
  struct sockaddr_in client_name;
 

@@ -1,6 +1,6 @@
-all: httpd client
+all: server client
 LIBS = -pthread #-lsocket
-httpd: httpd.c
+server: httpd.c
 	gcc -g -W -Wall $(LIBS) -o $@ $<
 
 client: simpleclient.c
